@@ -84,7 +84,12 @@
                   <div class="card col-5 mb-3 ms-3">
                       <div class="card-body">
                          <h5 class="card-title"> @<%= review.owner.username %></h5>
-                          <p class="starability-result" data-rating="<%= review.rating %>"> </p>
+                          <!-- <p class="starability-result" data-rating="<%= review.rating %>"> </p> -->
+                           <!-- Make stars responsive -->
+    <p class="starability-result flex flex-wrap" 
+       data-rating="<%= review.rating %>" 
+       style="flex-wrap: wrap; overflow: hidden; max-width: 100%; font-size: 1rem;">
+    </p>
                           <p class="card-text"><%= review.comment %></p>
                       </div>
                       <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">
