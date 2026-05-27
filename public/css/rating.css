@@ -195,3 +195,29 @@
   -webkit-transition: background-position .7s;
   transition: background-position .7s;
 }
+ .rating-stars{
+  font-size: 1rem;
+  overflow-x: auto;
+ }
+ /* Tablet */
+ @media (max-width: 768px) {
+  .rating-stars{
+    font-size: 0.9rem;
+  }
+ }
+ /* MOBILE */
+ @media (max-width: 480px) {
+   .rating-stars{
+    font-size: 0.75rem;
+   }
+ 
+ .card-body{
+  padding: 0.8rem;
+ }
+ .card-title{
+  font-size: 1rem;
+ }
+ .card-text{
+  font-size: 0.9rem;
+ }
+}

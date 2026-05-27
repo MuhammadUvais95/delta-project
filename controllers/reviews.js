@@ -4,11 +4,14 @@ const Review = require("../models/review")
 
 module.exports.createReview = async(req, res) => {
     const listing  = await Listing.findById(req.params.id);
+    console.log("Listing from reviewController::", listing);
     // create new review and receive it from request body and its object which is review.
     const newReview = new Review(req.body.review);
+    console.log("New review from reviewController::", newReview);
     newReview.owner = req.user._id;  // add the owner to  the review
     const reviewStoredToMongoDB = listing.reviews.push(newReview);
     //save them
+     console.log("New Listing and  review from reviewController::",listing, " and ", newReview);
     await newReview.save();
     await listing.save();
      req.flash("success", "New Review Created!");

@@ -9,9 +9,8 @@
           <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing-image">
           <div class="card-body">
               <p class="card-text">
-               <p><i> Owned by: <%= listing.owner.username %> </i></p>
+               <p><i> Owned by: <b><%= listing.owner.username %> </b> </i></p>
                  <p><%= listing.title %></p>
-                  <!-- <p><%= listing.category %></p> -->
                   <p><%= listing.description %></p>
                  <p> &#8377;<%= listing.price.toLocaleString("en-IN") %></p>
                   <p><%= listing.location %></p>
@@ -81,15 +80,12 @@
    <div class="row">
      <p> <b>All Reviews</b></p>
      <% for(review of listing.reviews)  { %>
-                  <div class="card col-5 mb-3 ms-3">
+                  <div class="card col-lg-5 col-md-6 col-sm-10 col-12 mb-3 ms-lg-3 mx-auto">
                       <div class="card-body">
                          <h5 class="card-title"> @<%= review.owner.username %></h5>
-                          <!-- <p class="starability-result" data-rating="<%= review.rating %>"> </p> -->
+                          <p class="starability-result rating-stars" data-rating="<%= review.rating %>"> </p>
                            <!-- Make stars responsive -->
-    <p class="starability-result flex flex-wrap" 
-       data-rating="<%= review.rating %>" 
-       style="flex-wrap: wrap; overflow: hidden; max-width: 100%; font-size: 1rem;">
-    </p>
+    <!-- <p class="starability-result rating-stars d-inline-block text-center w-100" data-rating="<%= review.rating %>" ></p> -->
                           <p class="card-text"><%= review.comment %></p>
                       </div>
                       <form method="POST" action="/listings/<%=listing._id%>/reviews/<%=review._id%>?_method=DELETE">

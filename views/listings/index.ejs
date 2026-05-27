@@ -1,55 +1,28 @@
- <% layout("/layouts/boilerplate") -%>   <!-- to add ejsmate to every page--> 
 
 
- <div class=" navbar navbar-expand-md filters">
+ <% layout("/layouts/boilerplate") %>
 
-   <div class="filter">
-       <div><i class="fa-solid fa-fire"></i></div>
-       <p>Trending</p>
-   </div>
 
-   <div class="filter">
-       <div><i class="fa-solid fa-bed"></i></div>
-       <p>Rooms</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-mountain-city"></i></div>
-       <p>Iconic cities</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-mountain"></i></div>
-       <p>Mountains</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-brands fa-fort-awesome"></i></div>
-       <p>Castles</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-person-swimming"></i></div>
-       <p>Amazing Pool</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-campground"></i></div>
-       <p>Camping</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-cow"></i></div>
-       <p>Farms</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-snowflake"></i></div>
-       <p>Arctic</p>
-   </div>
-    <div class="filter">
-       <div><i class="fa-solid fa-igloo"></i></div>
-       <p>Domes</p>
-   </div>
-   <div class="filter">
-       <div><i class="fa-solid fa-ship"></i></div>
-       <p>Boats</p>
-   </div>
+<div class="navbar navbar-expand-md filters">
 
-   <!-- Display total after taxes -->
+   <% filters.forEach((filter) => { %>
+      <a 
+         href="/listings/category/<%= filter.slug %>"
+         class="filter <%= selectedCategory === filter.slug ? 'active-filter' : '' %>"
+      >
+
+         <div>
+            <i class="<%= filter.icon %>"></i>
+         </div>
+
+         <p class="text-nowrap"><%= filter.name %></p>
+     <% }) %>
+
+      </a>
+      
+
+   <!-- TAX TOGGLE -->
+    <!-- Display total after taxes -->
      <div class="tax-toggle">
          <div class="form-check form-switch form-check-reverse">
               <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
@@ -58,8 +31,11 @@
       </div>
  </div>
 
-      <!-- listing image  -->
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
+
+
+<!-- LISTINGS -->
+ <% if(allListings.length > 0) { %>
+      <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
 
       <% for(let listing of allListings) {  %>
         <a href="/listings/<%= listing._id %>" class="listing-link">   
@@ -78,13 +54,17 @@
               </a>
 
            <% } %> 
+</div> 
+<% }  else { %>
+      <div class="text-center mt-5">
+      <h2>No Listing Found</h2>
+      <p class="text-muted">The category you searched for does not exist or has no listings available yet.</p>
+      <a href="/listings" class="btn btn-outline-info mt-2">Explore All Listings</a>
+      </div>
+      <% } %>
 
-</div>
-
-
-
-
-<script>
+            
+ <script>
     let taxSwitch = document.getElementById("switchCheckDefault");
     taxSwitch.addEventListener("click", () => {
          let taxInfo = document.getElementsByClassName("tax-info");
@@ -94,15 +74,7 @@
              info.style.display = "inline";
             } else {
                 info.style.display = "none";
-
             }
-
          }
-    
-        
     });
-
 </script>
-       
-
-
