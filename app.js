@@ -12,7 +12,8 @@ const ExpressError = require("./utils/ExpressError.js");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
-const searchRoute = require("./routes/searchBarRoute.js");
+const searchRouter = require("./routes/searchBarRoute.js");
+const bookingRouter = require("./routes/booking.js");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const flash = require("connect-flash");
@@ -21,6 +22,8 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const Listing = require("./models/listing.js");
 const dbUrl = process.env.ATLASDB_URL;
+const dns = require("dns");
+dns.setServers(["1.1.1.1", "1.0.0.1"]);
 
 
 main()
@@ -31,7 +34,7 @@ main()
     console.log(err);
   });
 async function main() {
-  mongoose.connect(dbUrl);
+  await mongoose.connect(dbUrl);
 }
 
 // to store session related information into ATLAS DB.
@@ -54,6 +57,8 @@ const sessionOptions = {
     httpOnly: true, // used to prevent from Cross Crypto Attack
   },
 };
+
+
 
 // to add the path of views directory
 app.set("view engine", "ejs");
@@ -84,6 +89,7 @@ app.use((req, res, next) => {
   res.locals.currUser = req.user; // stores current user's session data/credentials
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
+  res.locals.warning = req.flash("warning");
   
   next();
 });
@@ -91,8 +97,14 @@ app.use((req, res, next) => {
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
+app.use("/listings", bookingRouter);
 app.use("/", userRouter);
-app.use("/", searchRoute);
+app.use("/", searchRouter);
+
+// solve problem page not found
+app.get("/", (req, res) => {
+  res.redirect("/listings");
+});
 
 app.all(/.*/, (req, res, next) => {
   next(new ExpressError(404, "Page Not Found!"));
@@ -105,5 +117,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log(`Server is listening on port :${port}`);
+  console.log(`Server is listening on port : ${port}`);
 });

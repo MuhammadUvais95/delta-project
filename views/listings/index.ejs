@@ -38,10 +38,19 @@
       <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1">
 
       <% for(let listing of allListings) {  %>
-        <a href="/listings/<%= listing._id %>" class="listing-link">   
+        <a href="/listings/<%= listing._id %>" class="listing-link <%=listing.isBooked? `booked-card` : `` %>">   
             
              <div class="card col listing-card">
-                  <img src="<%=listing.image.url%>" class="card-img-top" alt="listing_image" style="height: 20rem;" >
+                  <img src="<%=listing.image.url%>"  alt="listing_image" class="card-img-top" style="height: 20rem;">
+                   <% if(listing.isBooked) { %>
+                      <span class="badge rounded-pill text-bg-success
+                        position-absolute top-0 end-0 gap-1 m-2.8">
+                       <i class="fa-regular fa-square-check fs-6"></i>
+                         Booked
+                        </span>
+
+                   <% } %>
+
                    <div class="card-img-overlay"></div>  
                    <div class="card-body">
                        <p class="card-text">

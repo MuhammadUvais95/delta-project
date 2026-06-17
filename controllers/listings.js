@@ -1,10 +1,11 @@
 const Listing = require("../models/listing.js");
 const { geocodeAddress } = require("../utils/geocode");
 const  filters = require("../utils/categories.js");
+const Booking = require("../models/bookingModel.js");
 
 module.exports.index = async (req, res) => {
-  const allListings = await Listing.find({});
-  res.render("listings/index.ejs", { allListings, filters, selectedCategory: "" });
+  const allListings = await Listing.find({})
+  res.render("listings/index.ejs", { allListings, filters, selectedCategory: "",});
 };
 
 module.exports.renderNewForm = (req, res) => {
@@ -44,7 +45,7 @@ module.exports.createNewListing = async (req, res) => {
     // // Declare coords
     let coords = null;
 
-    // // Fetch coords if location is provided
+    // Fetch coords if location is provided
     if (newListing.location) {
       const query = `${newListing.location}, ${newListing.country || ""}`;
       coords = await geocodeAddress(query.trim());
@@ -54,18 +55,18 @@ module.exports.createNewListing = async (req, res) => {
         console.log("⚠️ No coords found for:", query);
       }
     }
-
     // Save to DB
     await newListing.save();
-
     req.flash("success", "New Listing Created!");
     res.redirect(`/listings/${newListing._id}`);
   } catch (err) {
-    console.error("❌ Error creating listing:", err);
+    console.error("Error creating listing:", err);
     req.flash("error", "Something went wrong while creating the listing.");
     res.redirect("/listings");
   }
 };
+
+
 
 module.exports.renderEditForm = async (req, res) => {
   const id = req.params.id.trim();
@@ -80,10 +81,14 @@ module.exports.renderEditForm = async (req, res) => {
   res.render("listings/edit.ejs", { listing, originalImageUrl });
 };
 
+
+
 module.exports.updateListing = async (req, res) => {
+  console.log(req.body);
+  console.log(req.file)
   try{
   let { id } = req.params;
-  const listing = await Listing.findByIdAndUpdate(
+   const listing = await Listing.findByIdAndUpdate(
     id,
     { ...req.body.listing },     // reconstruct is used here. updated the listing including all the fields(except image)
     { new: true },
@@ -91,9 +96,8 @@ module.exports.updateListing = async (req, res) => {
   if (typeof req.file != "undefined") {
     // if file is already exist it will work otherwise not.
     const url = req.file.path;
-    const filename = req.body.filename;
+    const filename = req.file.filename;
     listing.image = { url, filename };
-    console.log("Listing is from Update controller ::",listing);
     await listing.save();
   }
   // Re-fetch coordinates if location is provided
@@ -112,8 +116,10 @@ module.exports.updateListing = async (req, res) => {
   res.redirect(`/listings/${id}`);
 } catch(err) {
   console.log("Error is from update controller::", err);
+  return res.status(500).json(`message: Error while updating Listing :: ${err}`);
 }
 }
+
 
 module.exports.destroyListing = async (req, res) => {
   const { id } = req.params;
@@ -141,7 +147,7 @@ module.exports.filteredCate = async (req, res) => {
 
     }catch(error){
        req.flash("error", "Something went wrong while creating the listing.");
-       console.log("❌ Error in Category Listing listing:", error);
+       console.log("Error in Category Listing listing:", error);
        res.redirect("/");
     }
 

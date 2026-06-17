@@ -9,7 +9,7 @@ const userSchema = new Schema({
   },
   booking:[{
     type: Schema.Types.ObjectId,
-    ref: "Listing"
+    ref: "Booking"
   }]
 }, {timestamps: true});
 // plugin the passportLocalMongoose
