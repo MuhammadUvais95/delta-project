@@ -24,8 +24,7 @@
 
       <div class="mb-3">
         <lable for="description" class="form-label">Description</lable>
-        <textarea name="listing[description]" class="form-control" required>
- <%= listing.description %></textarea
+        <textarea name="listing[description]" class="form-control" required> <%= listing.description %></textarea
         >
         <div class="invalid-feedback">provide a short description.</div>
       </div>
@@ -51,14 +50,14 @@
         <select name="listing[category]" class="form-select" required>
             <option value="">Select Category</option>
             <option value="Trending">Trending</option>
-            <option value="Roomes">Roomes</option>
-            <option value="Iconic cities">Iconic ities</option>
+            <option value="Rooms">Rooms</option>
+            <option value="Iconic-cities">Iconic ities</option>
             <option value="Mountains">Mountains</option>
             <option value="Castles">Castles</option>
-            <option value="amazing-pool">Amazing Pool</option>
+            <option value="Amazing-pool">Amazing Pool</option>
             <option value="Camping">Camping</option>
-            <option value="Trending">Farms</option>
-            <option value="Farms">Arctic</option>
+            <option value="Farms">Farms</option>
+            <option value="Arctic">Arctic</option>
             <option value="Domes">Domes</option>
             <option value="Boats">Boats</option>
         </select>
@@ -102,7 +101,7 @@
         <div class="invalid-feedback">location should be valid.</div>
       </div>
 
-      <button class="btn btn-dark edit-btn mt-3 w-100 w-md">Edit</button>
+      <button class="btn btn-dark edit-btn mt-3">Save</button>
     </form>
   </div>
 </div>

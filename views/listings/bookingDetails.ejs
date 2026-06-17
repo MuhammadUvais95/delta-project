@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate") -%>
+
+<div class=" booking-container-info my-3 ">
+   
+    <div class="booking-card mx-auto shadow-lg">
+         <h3 class="text-center text-success mb-4">
+             <i class="fa-solid fa-circle-check"></i>
+             Booking Confirmed!
+        </h3>
+       <div class="detail-row "><span>Booking ID: </span> <span id="bookingId" onclick="copyFun()"  style="cursor:pointer; color:#0d6efd;"><%=booking._id%></span> </div>
+       <div class="detail-row">
+          <span>Booking from: </span>
+           <span><%=booking.checkIn.toLocaleDateString("en-IN",
+             {day:"numeric", month: "long", year: "numeric"})%>
+              to
+               <%=booking.checkOut.toLocaleDateString("en-IN", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+               })%>
+            </span>
+       </div>
+       <div class="detail-row">
+         <span>Total Charge: </span> 
+         <span>&#8377;<%=booking.totalRent%></span>
+       </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+   copyFun = () => {
+       const bId = document.querySelector("#bookingId").innerText;
+       navigator.clipboard.writeText(bId);
+  
+      document.querySelector("#bookingId").innerText = "Copied!";
+
+      setTimeout(() => {
+        document.querySelector("#bookingId").innerText = bId;
+      }, 1000);
+   
+  }
+</script>

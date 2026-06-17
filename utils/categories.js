@@ -26,7 +26,7 @@ module.exports = [
       icon: "fa-brands fa-fort-awesome"
    },
    {
-      name: "amazing-pool",
+      name: "Amazing-pool",
       slug: "amazing-pool",
       icon: "fa-solid fa-person-swimming"
    },

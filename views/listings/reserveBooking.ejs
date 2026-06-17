@@ -1,0 +1,105 @@
+<% layout("/layouts/boilerplate") -%>
+
+<div style="display: flex; justify-content: center;">
+  <form method="POST" action="/listings/<%=listing._id%>/confirmBooking" class="booking-container">
+    <h1>Confirm & Book</h1>
+    <div class="booking-body">
+      <h3>Your Trip -</h3>
+
+      <div class="booking-content">
+        <div class="data-field">
+          <label for="checkInDate">CheckIn: </label>
+          <input type="date" id="checkInDate" name="checkIn" required> <br>
+        </div>
+
+        <div class="data-field">
+          <label for="checkOutDate">CheckOut: </label>
+          <input type="date" id="checkOutDate" name="checkOut" required>
+        </div>
+
+        <div class="data-field">
+          <input type="hidden" id="totalRent" name="totalRent" required>
+        </div>
+
+      </div>
+      <button class="btn btn-danger mt-2 text-center" style="padding: 12px 50px;">Book Now</button>
+    </div>
+  </form>
+
+
+
+
+    <form class="listing-booking-container">
+      <div class="listing-booking">
+        <img src="<%=listing.image.url%>" alt="<%=listing.title %>">
+        <div class="listing-booking-info">
+          <p>
+            <%= listing.title.length > 40 ?
+            listing.title.substring(0, 40) + "..." : listing.title
+            %>
+          </p> 
+          <p>
+            <%=listing.description.length > 35 ?
+            listing.description.substring(0, 35) + "..." : listing.description
+            %>
+          </p> 
+          <p>&#8377;<%=listing.price.toLocaleString("en-IN")%></p>
+          </div>
+      </div>
+<hr />
+
+      <div class="listingRent">
+        <h3>Booking Price:</h3>
+        <p><span class="totalAirbnbAmount"></span></p>
+        <p class="extraTax"></p>
+        <b><p class="totalRent"></p></b>
+
+      </div>
+
+  </form>
+
+  </div>
+
+
+
+
+
+  <script>
+
+    const listingPrice = <%=listing.price %>;
+    const formData = {};
+
+    const inputHandler = (e) => {
+    const{ name, value } = e.target;
+    formData[name] = value;
+    calculateTotalRent();
+    console.log(formData)
+  }
+
+  const calculateTotalRent = () => {
+    const checkInDate = new Date(formData.checkIn);
+    const checkOutDate = new Date(formData.checkOut);
+    if(checkOutDate > checkInDate) {
+      const totalNight =  (checkOutDate - checkInDate)/(24*60*60*1000);
+      const totalAirbnbAmount = listingPrice * totalNight;
+      const extraTax = listingPrice*(7/100);  
+      const totalRent = totalAirbnbAmount + extraTax;
+      console.log("Amount is :: ",totalRent);
+      document.querySelector(".totalAirbnbAmount").textContent = `${listingPrice} X ${totalNight} night(s): ₹${totalAirbnbAmount}`;
+      document.querySelector(".extraTax").textContent = `Tax: ₹${extraTax}`;
+      document.querySelector(".totalRent").textContent = `Airbnb charge (Inc. GST): ₹${totalRent}`;
+      document.getElementById("totalRent").value = `${totalRent}`;
+
+    }
+   
+  }
+
+  document.querySelectorAll("input").forEach(inp => inp.addEventListener("input", inputHandler));
+
+  </script>
+
+
+
+
+
+

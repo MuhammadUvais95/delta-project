@@ -6,13 +6,20 @@
        </div>
 
        <div class="card show-card col-6 offset-3 listing-card">
-          <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing-image" style="height: 20rem;">
+          <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="listing-image" style="height: 20rem;" >
           <div class="card-body">
               <p class="card-text">
                <p><i> Owned by: <b><%= listing.owner.username %> </b> </i></p>
                  <p><%= listing.title %></p>
                   <p><%= listing.description %></p>
                  <p> &#8377;<%= listing.price.toLocaleString("en-IN") %></p>
+                 <% if(currUser && !listing.owner._id.equals(currUser._id)) { %>
+                  <% if(listing.isBooked) { %>
+                 <a href="/listings/<%=listing._id%>/createBooking" class="btn btn-danger mb-3 p-2 disabled" type="button" aria-disabled="true">Already Booked</a>
+                 <% } else { %>
+                  <a href="/listings/<%=listing._id%>/createBooking" class="btn btn-danger mb-3 p-2">Reserve now</a>
+                 <% } %>
+                 <% } %>
                   <p><%= listing.location %></p>
                   <p><%= listing.country %></p>
 
@@ -111,6 +118,9 @@
 </div>
 
  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+
 <script>
   // Safely get coordinates from server
   const coords = <%- JSON.stringify(listing.coords || {}) %>;
@@ -119,7 +129,7 @@
   const lat = coords.lat || 0;
   const lng = coords.lng || 0;
   console.log(`from script : ${lat}`);
-    console.log(`from script : ${lng}`);
+  console.log(`from script : ${lng}`);
 
   // Title and location for popup
   const popupTitle = <%- JSON.stringify(listing.title || '') %>;

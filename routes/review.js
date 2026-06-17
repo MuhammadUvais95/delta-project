@@ -16,7 +16,7 @@ const reviewController = require("../controllers/reviews.js");
 // POST REVIEW ROUT
 router.post(
   "/",
-  isLoggedIn,
+  // isLoggedIn,
   validateReview,
   wrapAsync(reviewController.createReview),
 );

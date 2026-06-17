@@ -3,19 +3,29 @@ const Review = require("../models/review")
 
 
 module.exports.createReview = async(req, res) => {
-    const listing  = await Listing.findById(req.params.id);
-    console.log("Listing from reviewController::", listing);
+    try{
+        console.log("Req.body:",req.body);
+        const listing  = await Listing.findById(req.params.id);
     // create new review and receive it from request body and its object which is review.
     const newReview = new Review(req.body.review);
-    console.log("New review from reviewController::", newReview);
+    console.log(newReview)
+    if(!newReview.comment || newReview.comment.trim() === "") {
+        // return res.json({message: "Review not created"});
+        req.flash("error", "comment is required!");
+    }
+
     newReview.owner = req.user._id;  // add the owner to  the review
     const reviewStoredToMongoDB = listing.reviews.push(newReview);
     //save them
-     console.log("New Listing and  review from reviewController::",listing, " and ", newReview);
     await newReview.save();
     await listing.save();
-     req.flash("success", "New Review Created!");
+    req.flash("success", "New Review Created!");
     res.redirect(`/listings/${listing._id}`);
+    }
+    catch(err) {
+        console.log("Error is in new review creating:", err);
+        return res.status(500).json({message: `Error is in : ${err}`});
+    }
 }
 
 

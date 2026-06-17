@@ -25,3 +25,14 @@ const initDB = async () => {
 };
 
 initDB();
+
+
+
+const updateListing = async() => {
+ const result =  await Listing.updateMany(
+    {isBooked: true}, {$set: { isBooked: false}},
+  );
+ console.log(`${result.modifiedCount} listing updated`);
+}
+
+updateListing();
